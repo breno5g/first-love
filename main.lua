@@ -1,23 +1,17 @@
 function love.load()
-	tick = require("libs.tick")
+	Object = require("libs.classic")
+	--Don't forget to load the file
+	require("rectangle")
 
-	--Create a boolean
-	drawRectangle = false
-
-	--The first argument is a function
-	--The second argument is the time it takes to call the function
-	tick.delay(function()
-		drawRectangle = true
-	end, 2)
+	r1 = Rectangle()
+	r2 = Rectangle()
+	print(r1.test, r2.test)
 end
 
 function love.update(dt)
-	tick.update(dt)
+	r1:update(dt)
 end
 
 function love.draw()
-	--if drawRectangle is true then draw a rectangle
-	if drawRectangle then
-		love.graphics.rectangle("fill", 100, 100, 300, 200)
-	end
+	r1:draw()
 end
