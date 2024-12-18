@@ -1,6 +1,6 @@
 function love.load()
 	Object = require("libs.classic")
-	--Don't forget to load the file
+	require("shape")
 	require("rectangle")
 
 	r1 = Rectangle(100, 100, 200, 50, 100)
