@@ -1,8 +1,12 @@
-function rectangle()
-	love.graphics.rectangle("fill", 100, 200, 50, 80)
+function love.load()
+	x = 50
+	speed = 50
+end
+
+function love.update(dt)
+	x = x + (speed * dt)
 end
 
 function love.draw()
-	-- love.graphics.print("Hello, World!", 100, 100)
-	rectangle()
+	love.graphics.rectangle("line", x, 50, 200, 150)
 end
