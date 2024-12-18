@@ -1,3 +1,5 @@
+require("hello")
+print(hello)
 function love.load()
 	rectList = {}
 end
