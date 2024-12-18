@@ -1,36 +1,23 @@
-local hello = require("hello")
-print(hello)
 function love.load()
-	rectList = {}
-end
+	tick = require("libs.tick")
 
-local function createRect()
-	local rect = {}
-	rect.x = 100
-	rect.y = 100
-	rect.width = 70
-	rect.height = 90
-	rect.speed = 100
+	--Create a boolean
+	drawRectangle = false
 
-	table.insert(rectList, rect)
-end
-
-function love.keypressed(key)
-	if key == "space" then
-		createRect()
-	end
+	--The first argument is a function
+	--The second argument is the time it takes to call the function
+	tick.delay(function()
+		drawRectangle = true
+	end, 2)
 end
 
 function love.update(dt)
-	local yDir = love.keyboard.isDown("up") and -1 or love.keyboard.isDown("down") and 1 or 0
-	for _, rect in ipairs(rectList) do
-		rect.x = rect.x + rect.speed * dt
-		rect.y = rect.y + rect.speed * dt * yDir
-	end
+	tick.update(dt)
 end
 
-function love.draw(dt)
-	for _, v in ipairs(rectList) do
-		love.graphics.rectangle("line", v.x, v.y, v.width, v.height)
+function love.draw()
+	--if drawRectangle is true then draw a rectangle
+	if drawRectangle then
+		love.graphics.rectangle("fill", 100, 100, 300, 200)
 	end
 end
