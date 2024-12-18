@@ -2,6 +2,8 @@ function love.load()
 	x = 300
 	y = 150
 	speed = 100
+
+	fruits = { "apple", "banana", "pineaple" }
 end
 
 function love.update(dt)
@@ -13,4 +15,9 @@ end
 
 function love.draw()
 	love.graphics.rectangle("line", x, y, 200, 150)
+
+	for i, v in ipairs(fruits) do
+		love.graphics.print(v, 100, 100 + 50 * i)
+	end
 end
+
