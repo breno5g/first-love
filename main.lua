@@ -32,4 +32,3 @@ function love.draw(dt)
 		love.graphics.rectangle("line", v.x, v.y, v.width, v.height)
 	end
 end
-
