@@ -1,23 +1,35 @@
 function love.load()
-	x = 300
-	y = 150
-	speed = 100
+	rectList = {}
+end
 
-	fruits = { "apple", "banana", "pineaple" }
+local function createRect()
+	local rect = {}
+	rect.x = 100
+	rect.y = 100
+	rect.width = 70
+	rect.height = 90
+	rect.speed = 100
+
+	table.insert(rectList, rect)
+end
+
+function love.keypressed(key)
+	if key == "space" then
+		createRect()
+	end
 end
 
 function love.update(dt)
-	local xDir = love.keyboard.isDown("right") and 1 or love.keyboard.isDown("left") and -1 or 0
 	local yDir = love.keyboard.isDown("up") and -1 or love.keyboard.isDown("down") and 1 or 0
-	x = x + speed * dt * xDir
-	y = y + speed * dt * yDir
+	for _, rect in ipairs(rectList) do
+		rect.x = rect.x + rect.speed * dt
+		rect.y = rect.y + rect.speed * dt * yDir
+	end
 end
 
-function love.draw()
-	love.graphics.rectangle("line", x, y, 200, 150)
-
-	for i, v in ipairs(fruits) do
-		love.graphics.print(v, 100, 100 + 50 * i)
+function love.draw(dt)
+	for _, v in ipairs(rectList) do
+		love.graphics.rectangle("line", v.x, v.y, v.width, v.height)
 	end
 end
 
