@@ -1,19 +1,26 @@
-function love.load()
-	Object = require("libs.classic")
-	require("shape")
-	require("rectangle")
+local image = love.graphics.newImage("assets/sheep.png")
+local x = 100
+local y = 100
+local speed = 100
+function love.load() end
 
-	r1 = Rectangle(100, 100, 200, 50, 100)
-	r2 = Rectangle(350, 80, 25, 140, 120)
-	print(r1.test, r2.test)
+local function calculateDirection(first, second)
+	local direction = (first and 1 or 0) - (second and 1 or 0)
+	return direction
 end
 
 function love.update(dt)
-	r1:update(dt)
-	r2:update(dt)
+	local xDir = calculateDirection(love.keyboard.isDown("right"), love.keyboard.isDown("left"))
+	local yDir = calculateDirection(love.keyboard.isDown("down"), love.keyboard.isDown("up"))
+
+	x = x + speed * dt * xDir
+	y = y + speed * dt * yDir
 end
 
 function love.draw()
-	r1:draw()
-	r2:draw()
+	love.graphics.setColor(25 / 255, 40 / 255, 230 / 255)
+	love.graphics.draw(image, x, y)
+	love.graphics.setColor(1, 1, 1)
+	love.graphics.draw(image, x + image:getWidth() + 10, y)
 end
+
