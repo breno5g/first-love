@@ -1,60 +1,59 @@
-# Lua com LÖVE2D
+# Lua with LÖVE2D
 
-Bem-vindo ao repositório de estudos de desenvolvimento de jogos em Lua utilizando o framework [LÖVE2D](https://love2d.org/).
+Welcome to the repository for studying game development in Lua using the [LÖVE2D](https://love2d.org/) framework.
 
-## ✨ Objetivo
+## ✨ Objective
 
-Este projeto foi criado para:
-- Explorar as funcionalidades da linguagem **Lua**.
-- Aprender a criar jogos 2D com o **LÖVE2D**.
-- Compartilhar exemplos e boas práticas de desenvolvimento.
+This project was created to:
+- Explore the features of the **Lua** programming language.
+- Learn how to create 2D games with **LÖVE2D**.
+- Share examples and best development practices.
 
-## 🔧 Ferramentas Necessárias
+## 🔧 Required Tools
 
-Certifique-se de ter instalado:
+Make sure you have installed:
 
-- [Lua](https://www.lua.org/download.html): Linguagem de programação.
-- [LÖVE2D](https://love2d.org/): Framework para desenvolvimento de jogos 2D.
-- [Make](https://www.gnu.org/software/make/): Para facilitar o processo de execução.
+- [Lua](https://www.lua.org/download.html): Programming language.
+- [LÖVE2D](https://love2d.org/): Framework for 2D game development.
+- [Make](https://www.gnu.org/software/make/): To simplify the execution process.
 
-## ⚡ Como Executar
+## ⚡ How to Run
 
-1. Clone o repositório:
+1. Clone the repository:
    ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
-   cd seu-repositorio
+   git clone https://github.com/your-username/your-repository.git
+   cd your-repository
    ```
 
-2. Execute o jogo com:
+2. Run the game with:
    ```bash
    make run
    ```
 
-O jogo será iniciado no LÖVE2D.
+The game will start in LÖVE2D.
 
-## 🎮 Demonstração
+## 🎮 Demonstration
 
-Por enquanto, o projeto inclui uma tela inicial básica. Mais funcionalidades serão adicionadas conforme o progresso do estudo.
+For now, the project includes a basic start screen. More features will be added as the study progresses.
 
-## 🔧 Contribuições
+## 🔧 Contributions
 
-Se você também está aprendendo Lua ou LÖVE2D e quer colaborar:
+If you are also learning Lua or LÖVE2D and want to collaborate:
 
-1. Crie um fork do repositório.
-2. Implemente sua alteração ou melhoria.
-3. Envie um Pull Request explicando o que foi feito.
+1. Fork the repository.
+2. Implement your changes or improvements.
+3. Submit a Pull Request explaining what was done.
 
-## 🌟 Melhorias Planejadas
+## 🌟 Planned Improvements
 
-- [ ] Adicionar sprites.
-- [ ] Implementar interações básicas (movimentação, colisões).
-- [ ] Criar uma mecânica simples de jogo.
+- [ ] Add sprites.
+- [ ] Implement basic interactions (movement, collisions).
+- [ ] Create a simple game mechanic.
 
-## 🎨 Licença
+## 🎨 License
 
-Este projeto está sob a [licença MIT](LICENSE). Sinta-se à vontade para usá-lo e modificá-lo como preferir.
+This project is under the [MIT license](LICENSE). Feel free to use and modify it as you wish.
 
 ---
 
-Desenvolvido com 💚 e curiosidade por **Breno Santos Ferreira**.
-
+Developed with 💚 and curiosity by **Breno Santos Ferreira**.
