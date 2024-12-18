@@ -1,10 +1,12 @@
 function love.load()
 	x = 50
-	speed = 50
+	speed = 100
 end
 
 function love.update(dt)
-	x = x + (speed * dt)
+	if x < 600 then
+		x = x + (speed * dt)
+	end
 end
 
 function love.draw()
