@@ -22,7 +22,7 @@ end
 function love.update(dt)
 	local xDir = calculateDirection(love.keyboard.isDown("right"), love.keyboard.isDown("left"))
 	local yDir = calculateDirection(love.keyboard.isDown("down"), love.keyboard.isDown("up"))
-	r1.x = r1.x + 1 * dt * xDir
+	r1.x = r1.x + 100 * dt * xDir
 	r1.y = r1.y + 100 * dt * yDir
 end
 
