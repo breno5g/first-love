@@ -1,4 +1,4 @@
-require("hello")
+local hello = require("hello")
 print(hello)
 function love.load()
 	rectList = {}

@@ -1,1 +1,3 @@
-hello = "Hello, World!"
+local hello = "Hello, World!"
+
+return hello
