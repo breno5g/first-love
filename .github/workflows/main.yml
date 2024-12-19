@@ -18,6 +18,18 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Baixar appimagetool
+        run: |
+          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O appimagetool.AppImage
+          chmod +x appimagetool.AppImage
+
+      - name: Adicionar appimagetool ao PATH
+        run: |
+          sudo mv appimagetool.AppImage /usr/local/bin/appimagetool
+          echo "appimagetool está no PATH:"
+          which appimagetool
+          appimagetool --version
+
       - name: Install makelove
         run: |
           python -m pip install --upgrade pip
