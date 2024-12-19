@@ -43,13 +43,14 @@ jobs:
 
       - name: Build Love2D project
         run: |
-          mkdir -p builds # Garantir que a pasta de saída exista
+          mkdir -p builds
           makelove --config makelove.toml
 
       - name: Compress build outputs
         run: |
-          zip -r builds/love.zip builds/love
-          zip -r builds/lovejs.zip builds/lovejs
+          cd builds
+          zip -r love.zip love
+          zip -r lovejs.zip lovejs
 
 
       - name: Create Release
