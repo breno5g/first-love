@@ -32,7 +32,7 @@ jobs:
           wget https://github.com/love2d/love/releases/download/11.5/love-11.5-x86_64.AppImage -O love2d.AppImage
           chmod +x love2d.AppImage
           sudo mv love2d.AppImage /usr/local/bin/love
-          love2d --version
+          love --version
 
 
       # Step 5: Download appimagetool
