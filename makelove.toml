@@ -1,5 +1,5 @@
 name = "first-love"
-default_targets = ["appimage", "lovejs"]
+default_targets = ["lovejs"]
 build_directory = "bin"
 
 love_files = ["::git-ls-tree::", "-*/.*"]

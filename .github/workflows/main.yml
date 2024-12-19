@@ -13,13 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Verify makelove.toml exists
-        run: |
-          if [ ! -f "makelove.toml" ]; then
-            echo "makelove.toml not found in the repository!"
-            exit 1
-          fi
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -30,15 +23,6 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install setuptools
           pip install makelove
-
-      - name: Download appimagetool
-        run: |
-          wget -O appimagetool-x86_64.AppImage https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
-          chmod +x appimagetool-x86_64.AppImage
-
-      - name: Set appimagetool path
-        run: |
-          echo "APPIMAGE_TOOL_PATH=$(pwd)/appimagetool-x86_64.AppImage" >> $GITHUB_ENV
 
       - name: Build Love2D project
         run: |
