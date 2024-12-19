@@ -6,28 +6,33 @@ on:
       - 'v*'
 
 jobs:
-  setup:
+  build:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
+      # Step 3: Install FUSE
       - name: Install FUSE
         run: |
           sudo apt-get update
           sudo apt-get install -y fuse
 
+      # Step 4: Download appimagetool
       - name: Download appimagetool
         run: |
           wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O appimagetool.AppImage
           chmod +x appimagetool.AppImage
 
+      # Step 5: Add appimagetool to PATH
       - name: Add appimagetool to PATH
         run: |
           sudo mv appimagetool.AppImage /usr/local/bin/appimagetool
@@ -35,54 +40,20 @@ jobs:
           which appimagetool
           appimagetool --version
 
+      # Step 6: Install makelove
       - name: Install makelove
         run: |
           python -m pip install --upgrade pip
           python -m pip install setuptools
           pip install makelove
 
-      - name: Save dependencies as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: dependencies
-          path: |
-            /usr/local/bin/appimagetool
-            /usr/local/bin/makelove
-
-  build_project:
-    runs-on: ubuntu-latest
-    needs: setup
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Download dependencies
-        uses: actions/download-artifact@v3
-        with:
-          name: dependencies
-
+      # Step 7: Build Love2D project
       - name: Build Love2D project
         run: |
           mkdir -p builds
           makelove --config makelove.toml
 
-      - name: Save build outputs as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: build_outputs
-          path: builds/
-
-  compress_outputs:
-    runs-on: ubuntu-latest
-    needs: build_project
-
-    steps:
-      - name: Download build outputs
-        uses: actions/download-artifact@v3
-        with:
-          name: build_outputs
-
+      # Step 8: Compress build outputs
       - name: Compress build outputs
         run: |
           cd builds
@@ -90,22 +61,7 @@ jobs:
           zip -r lovejs.zip lovejs
           zip -r love-appimage.zip appimage
 
-      - name: Save compressed files as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: compressed_files
-          path: builds/*.zip
-
-  release:
-    runs-on: ubuntu-latest
-    needs: compress_outputs
-
-    steps:
-      - name: Download compressed files
-        uses: actions/download-artifact@v3
-        with:
-          name: compressed_files
-
+      # Step 9: Create Release
       - name: Create Release
         uses: ncipollo/release-action@v1.14.0
         with:
