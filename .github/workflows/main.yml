@@ -26,13 +26,20 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y fuse
 
-      # Step 4: Download appimagetool
+      # Step 4: Install Love2D
+      - name: Install Love2D
+        run: |
+          sudo add-apt-repository ppa:love2d/stable
+          sudo apt-get update
+          sudo apt-get install -y love
+
+      # Step 5: Download appimagetool
       - name: Download appimagetool
         run: |
           wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O appimagetool.AppImage
           chmod +x appimagetool.AppImage
 
-      # Step 5: Add appimagetool to PATH
+      # Step 6: Add appimagetool to PATH
       - name: Add appimagetool to PATH
         run: |
           sudo mv appimagetool.AppImage /usr/local/bin/appimagetool
@@ -40,20 +47,20 @@ jobs:
           which appimagetool
           appimagetool --version
 
-      # Step 6: Install makelove
+      # Step 7: Install makelove
       - name: Install makelove
         run: |
           python -m pip install --upgrade pip
           python -m pip install setuptools
           pip install makelove
 
-      # Step 7: Build Love2D project
+      # Step 8: Build Love2D project
       - name: Build Love2D project
         run: |
           mkdir -p builds
           makelove --config makelove.toml
 
-      # Step 8: Compress build outputs
+      # Step 9: Compress build outputs
       - name: Compress build outputs
         run: |
           cd builds
@@ -61,7 +68,7 @@ jobs:
           zip -r lovejs.zip lovejs
           zip -r love-appimage.zip appimage
 
-      # Step 9: Create Release
+      # Step 10: Create Release
       - name: Create Release
         uses: ncipollo/release-action@v1.14.0
         with:
