@@ -51,6 +51,7 @@ jobs:
           cd builds
           zip -r love.zip love
           zip -r lovejs.zip lovejs
+          zip -r love-appimage.zip appimage
 
 
       - name: Create Release
@@ -61,3 +62,4 @@ jobs:
           artifacts: |
             builds/love.zip
             builds/lovejs.zip
+            builds/love-appimage.zip
