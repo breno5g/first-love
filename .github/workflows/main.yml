@@ -31,7 +31,6 @@ jobs:
 
       - name: Compress build outputs
         run: |
-          zip -r bin/appimage.zip bin/appimage
           zip -r bin/love.zip bin/love
           zip -r bin/lovejs.zip bin/lovejs
 
@@ -42,6 +41,5 @@ jobs:
           tag: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           artifacts: |
-            bin/appimage.zip
             bin/love.zip
             bin/lovejs.zip
