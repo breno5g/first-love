@@ -29,9 +29,11 @@ jobs:
       # Step 4: Install Love2D
       - name: Install Love2D
         run: |
-          sudo add-apt-repository ppa:bartbes/love-stable
-          sudo apt-get update
-          sudo apt-get install -y love
+          wget https://github.com/love2d/love/releases/download/11.5/love-11.5-x86_64.AppImage -O love2d.AppImage
+          chmod +x love2d.AppImage
+          sudo mv love2d.AppImage /usr/local/bin/love
+          love2d --version
+
 
       # Step 5: Download appimagetool
       - name: Download appimagetool
