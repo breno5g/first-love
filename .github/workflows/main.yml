@@ -58,7 +58,7 @@ jobs:
           NAME=$(grep -oP '(?<=name = ").*?(?=")' makelove.toml)
           LOVE_VERSION=$(grep -oP '(?<=version = ").*?(?=")' makelove.toml)
           LOVE_URL=https://github.com/love2d/love/releases/download/$LOVE_VERSION/love-$LOVE_VERSION-x86_64.AppImage
-          zip -9 -r $NAME.love .
+          zip -9 -r $NAME.love . -x "./builds/*"
           wget $LOVE_URL -O love.AppImage
           chmod +x love.AppImage
           ./love.AppImage --appimage-extract
