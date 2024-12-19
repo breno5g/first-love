@@ -7,78 +7,76 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+
     steps:
       # Step 1: Checkout the code
       - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          path: main
-          submodules: true
+        uses: actions/checkout@v3
 
-      # Step 2: Install system dependencies
-      - name: Install Dependencies
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # Step 3: Install FUSE
+      - name: Install FUSE
         run: |
           sudo apt-get update
-          sudo apt-get install --assume-yes wine-stable wine64 python3-pip fuse
+          sudo apt-get install -y fuse
 
-      # Step 3: Checkout makelove
-      - name: Checkout makelove
-        uses: actions/checkout@v2
-        with:
-          repository: pfirsich/makelove
-          path: makelove
+      # Step 4: Install Love2D
+      - name: Install Love2D
+        run: |
+          wget https://github.com/love2d/love/releases/download/11.5/love-11.5-x86_64.AppImage -O love2d.AppImage
+          chmod +x love2d.AppImage
+          sudo mv love2d.AppImage /usr/local/bin/love
+          love --version
 
-      # Step 4: Install makelove
+
+      # Step 5: Download appimagetool
+      - name: Download appimagetool
+        run: |
+          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O appimagetool.AppImage
+          chmod +x appimagetool.AppImage
+
+      # Step 6: Add appimagetool to PATH
+      - name: Add appimagetool to PATH
+        run: |
+          sudo mv appimagetool.AppImage /usr/local/bin/appimagetool
+          echo "appimagetool is in PATH:"
+          which appimagetool
+          appimagetool --version
+
+      # Step 7: Install makelove
       - name: Install makelove
         run: |
-          pip3 install ./makelove
+          python -m pip install --upgrade pip
+          python -m pip install setuptools
+          pip install makelove
 
-      # Step 5: Download Love2D AppImage
-      - name: Download Love2D AppImage
-        run: |
-          wget https://github.com/love2d/love/releases/download/11.5/love-11.5-x86_64.AppImage -O love.AppImage
-          chmod +x love.AppImage
-          ./love.AppImage --appimage-extract
-
-      # Step 6: Run makelove to build the Love2D project
+      # Step 8: Build Love2D project
       - name: Build Love2D project
         run: |
-          cd main/game
-          python3 -m makelove
+          mkdir -p builds
+          makelove --config makelove.toml
 
-      # Step 7: Prepare Artifact Names
-      - name: Prepare Artifact Names
+      # Step 9: Compress build outputs
+      - name: Compress build outputs
         run: |
-          echo "::set-env name=ARTIFACT_NAME_LOVE::$(ls main/makelove-build/love | head -n1)"
-          echo "::set-env name=ARTIFACT_NAME_APPIMAGE::$(ls main/makelove-build/appimage | head -n1)"
-          echo "::set-env name=ARTIFACT_NAME_WIN64::$(ls main/makelove-build/win64 | head -n1)"
-          echo "::set-env name=ARTIFACT_NAME_MACOS::$(ls main/makelove-build/macos | head -n1)"
+          cd builds
+          zip -r love.zip love
+          zip -r lovejs.zip lovejs
+          zip -r love-appimage.zip appimage
 
-      # Step 8: Upload Artifact (Love2D)
-      - name: Artifact (Love)
-        uses: actions/upload-artifact@v2
+      # Step 10: Create Release
+      - name: Create Release
+        uses: ncipollo/release-action@v1.14.0
         with:
-          name: ${{ env.ARTIFACT_NAME_LOVE }}
-          path: main/makelove-build/love/${{ env.ARTIFACT_NAME_LOVE }}
-
-      # Step 9: Upload Artifact (AppImage)
-      - name: Artifact (AppImage)
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ env.ARTIFACT_NAME_APPIMAGE }}
-          path: main/makelove-build/appimage/${{ env.ARTIFACT_NAME_APPIMAGE }}
-
-      # Step 10: Upload Artifact (Win64)
-      - name: Artifact (Win64)
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ env.ARTIFACT_NAME_WIN64 }}
-          path: main/makelove-build/win64/${{ env.ARTIFACT_NAME_WIN64 }}
-
-      # Step 11: Upload Artifact (MacOS)
-      - name: Artifact (MacOS)
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ env.ARTIFACT_NAME_MACOS }}
-          path: main/makelove-build/macos/${{ env.ARTIFACT_NAME_MACOS }}
+          tag: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          artifacts: |
+            builds/love.zip
+            builds/lovejs.zip
+            builds/love-appimage.zip
