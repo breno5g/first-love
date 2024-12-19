@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,20 +18,25 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Instalar FUSE
+  install_dependencies:
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: Install FUSE
         run: |
           sudo apt-get update
           sudo apt-get install -y fuse
 
-      - name: Baixar appimagetool
+      - name: Download appimagetool
         run: |
           wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O appimagetool.AppImage
           chmod +x appimagetool.AppImage
 
-      - name: Adicionar appimagetool ao PATH
+      - name: Add appimagetool to PATH
         run: |
           sudo mv appimagetool.AppImage /usr/local/bin/appimagetool
-          echo "appimagetool está no PATH:"
+          echo "appimagetool is in PATH:"
           which appimagetool
           appimagetool --version
 
@@ -41,11 +46,21 @@ jobs:
           python -m pip install setuptools
           pip install makelove
 
+  build_project:
+    runs-on: ubuntu-latest
+    needs: install_dependencies
+
+    steps:
       - name: Build Love2D project
         run: |
           mkdir -p builds
           makelove --config makelove.toml
 
+  compress_outputs:
+    runs-on: ubuntu-latest
+    needs: build_project
+
+    steps:
       - name: Compress build outputs
         run: |
           cd builds
@@ -53,7 +68,11 @@ jobs:
           zip -r lovejs.zip lovejs
           zip -r love-appimage.zip appimage
 
+  release:
+    runs-on: ubuntu-latest
+    needs: compress_outputs
 
+    steps:
       - name: Create Release
         uses: ncipollo/release-action@v1.14.0
         with:
