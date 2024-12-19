@@ -12,6 +12,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        
       - name: Verify makelove.toml exists
         run: |
           if [ ! -f "makelove.toml" ]; then
@@ -29,6 +30,11 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install setuptools
           pip install makelove
+
+      - name: Download appimagetool
+        run: |
+          wget -O appimagetool-x86_64.AppImage https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool-x86_64.AppImage
 
       - name: Build Love2D project
         run: |
