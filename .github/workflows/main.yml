@@ -21,6 +21,7 @@ jobs:
       - name: Install makelove
         run: |
           python -m pip install --upgrade pip
+          python -m pip install setuptools
           pip install makelove
 
       - name: Build Love2D project
