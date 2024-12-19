@@ -81,6 +81,9 @@ jobs:
           zip -r love.zip love
           zip -r lovejs.zip lovejs
           zip -r appimage.zip appimage
+          zip -r macos.zip macos
+          zip -r win32.zip win32
+          zip -r win64.zip win64
 
       # Step 9 Create Release
       - name: Create Release
@@ -92,3 +95,6 @@ jobs:
             builds/love.zip
             builds/lovejs.zip
             builds/appimage.zip
+            builds/macos.zip
+            builds/win32.zip
+            builds/win64.zip
