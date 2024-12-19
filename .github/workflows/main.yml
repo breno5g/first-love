@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Verify makelove.toml exists
         run: |
           if [ ! -f "makelove.toml" ]; then
@@ -35,6 +35,10 @@ jobs:
         run: |
           wget -O appimagetool-x86_64.AppImage https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
           chmod +x appimagetool-x86_64.AppImage
+
+      - name: Set appimagetool path
+        run: |
+          echo "APPIMAGE_TOOL_PATH=$(pwd)/appimagetool-x86_64.AppImage" >> $GITHUB_ENV
 
       - name: Build Love2D project
         run: |
