@@ -1,4 +1,4 @@
-name: Build Love2D Project
+name: Build Love2D Project - [win32, win64, lovejs, macos, appimage]
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  build:
+  main-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -59,7 +59,6 @@ jobs:
           cd builds
           zip -r love.zip love
           zip -r lovejs.zip lovejs
-          zip -r love-appimage.zip appimage
 
       # Step 9 Create Release
       - name: Create Release
@@ -70,4 +69,73 @@ jobs:
           artifacts: |
             builds/love.zip
             builds/lovejs.zip
-            builds/love-appimage.zip
+  appimage-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # Step 3: Install FUSE
+      - name: Install FUSE
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fuse
+
+      # Step 4: Download appimagetool
+      - name: Download appimagetool
+        run: |
+          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O appimagetool.AppImage
+          chmod +x appimagetool.AppImage
+
+      # Step 5: Add appimagetool to PATH
+      - name: Add appimagetool to PATH
+        run: |
+          sudo mv appimagetool.AppImage /usr/local/bin/appimagetool
+          echo "appimagetool is in PATH:"
+          which appimagetool
+          appimagetool --version
+
+      # Step 7: Build Love2D project
+      - name: Build Love2D project
+        run: |
+          NAME=$(grep -oP '(?<=name = ").*?(?=")' makelove.toml)
+          LOVE_VERSION=$(grep -oP '(?<=version = ").*?(?=")' makelove.toml)
+          LOVE_URL=https://github.com/love2d/love/releases/download/$LOVE_VERSION/love-$LOVE_VERSION-x86_64.AppImage
+          zip -9 -r $NAME.love .
+          wget $LOVE_URL -O love.AppImage
+          chmod +x love.AppImage
+          ./love.AppImage --appimage-extract
+          cat ./squashfs-root/bin/love $NAME.love > ./squashfs-root/bin/$NAME
+          chmod +x ./squashfs-root/bin/$NAME
+          rm -rf ./squashfs-root/bin/love
+          mv ./squashfs-root/bin/$NAME ./squashfs-root/bin/love
+          appimagetool ./squashfs-root $NAME.AppImage
+          rm -rf love.AppImage
+          rm -rf squashfs-root
+          rm -rf love.AppImage
+
+          mkdir -p builds/appimage
+          mv $NAME.AppImage builds/appimage
+
+      # Step 8: Compress build outputs
+      - name: Compress build outputs
+        run: |
+          cd builds
+          zip -r appimage.zip appimage
+
+      # Step 9 Create Release
+      - name: Create Release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          tag: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          artifacts: |
+            builds/appimage.zip
