@@ -26,14 +26,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y fuse
 
-      # Step 4: Install Love2D
-      - name: Install Love2D
+      # Step 4: Install Love2D as AppImage
+      - name: Install Love2D as AppImage
         run: |
-          wget https://github.com/love2d/love/releases/download/11.5/love-11.5-x86_64.AppImage -O love2d.AppImage
-          chmod +x love2d.AppImage
-          sudo mv love2d.AppImage /usr/local/bin/love
-          love --version
-
+          # Download the Love2D AppImage version 11.5
+          wget https://github.com/love2d/love/releases/download/11.5/love-11.5-x86_64.AppImage -O love.AppImage
+          # Make the AppImage executable
+          chmod +x love.AppImage
+          # Extract the contents of the AppImage
+          ./love.AppImage --appimage-extract
+          # Move extracted files to a location accessible in PATH
+          sudo mv squashfs-root /usr/local/bin/love
+          # Verify installation by running the Love2D binary
+          /usr/local/bin/love/usr/bin/love --version
 
       # Step 5: Download appimagetool
       - name: Download appimagetool
