@@ -12,6 +12,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Verify makelove.toml exists
+        run: |
+          if [ ! -f "makelove.toml" ]; then
+            echo "makelove.toml not found in the repository!"
+            exit 1
+          fi
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -27,7 +33,7 @@ jobs:
       - name: Build Love2D project
         run: |
           mkdir -p bin # Garantir que a pasta de saída exista
-          makelove --output bin
+          makelove --config makelove.toml
 
       - name: Compress build outputs
         run: |
