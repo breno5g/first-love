@@ -1,18 +1,18 @@
-function love.load()
-	r1 = {
-		x = 10,
-		y = 100,
-		width = 100,
-		height = 100,
-	}
+local r1 = {
+	x = 10,
+	y = 100,
+	width = 100,
+	height = 100,
+}
 
-	r2 = {
-		x = 250,
-		y = 300,
-		width = 100,
-		height = 100,
-	}
-end
+local r2 = {
+	x = 250,
+	y = 300,
+	width = 100,
+	height = 100,
+}
+
+function love.load() end
 
 local function calculateDirection(first, second)
 	local direction = (first and 1 or 0) - (second and 1 or 0)
