@@ -46,9 +46,9 @@ If you are also learning Lua or LÖVE2D and want to collaborate:
 
 ## 🌟 Planned Improvements
 
-- [ ] Add sprites.
-- [ ] Implement basic interactions (movement, collisions).
-- [ ] Create a simple game mechanic.
+- [x] Add sprites.
+- [x] Implement basic interactions (movement, collisions).
+- [x] Create a simple game mechanic.
 
 ## 🎨 License
 
