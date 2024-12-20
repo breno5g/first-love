@@ -9,12 +9,24 @@ function love.load()
 	listOfBullets = {}
 end
 
+function love.keypressed(key)
+	player:keyPressed(key)
+end
+
 function love.update(dt)
 	player:update(dt)
 	enemy:update(dt)
+
+	for _, bullet in pairs(listOfBullets) do
+		bullet:update(dt)
+	end
 end
 
 function love.draw()
 	player:draw()
 	enemy:draw()
+
+	for _, bullet in pairs(listOfBullets) do
+		bullet:draw()
+	end
 end

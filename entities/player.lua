@@ -6,6 +6,7 @@ function Player:new()
 	self.y = 20
 	self.speed = 500
 	self.width = self.image:getWidth()
+	self.height = self.image:getHeight()
 end
 
 function Player:draw()
@@ -21,6 +22,12 @@ function Player:update(dt)
 		self.x = 0
 	elseif self.x + self.width > window_width then
 		self.x = window_width - self.width
+	end
+end
+
+function Player:keyPressed(key)
+	if (key == "space") then
+		table.insert(listOfBullets, Bullet(self.x + self.width / 2, self.y + self.height))
 	end
 end
 
