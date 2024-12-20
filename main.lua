@@ -17,8 +17,14 @@ function love.update(dt)
 	player:update(dt)
 	enemy:update(dt)
 
-	for _, bullet in pairs(listOfBullets) do
+	for index, bullet in pairs(listOfBullets) do
 		bullet:update(dt)
+
+		bullet:checkCollision(enemy)
+
+		if bullet.dead then
+			table.remove(listOfBullets, index)
+		end
 	end
 end
 
