@@ -12,6 +12,11 @@ end
 
 function Bullet:update(dt)
   self.y = self.y + self.speed * dt
+  local window_height = love.graphics.getHeight()
+
+  if self.y > window_height then
+    love.load()
+  end
 end
 
 function Bullet:draw()
