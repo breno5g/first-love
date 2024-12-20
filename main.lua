@@ -54,8 +54,15 @@ function love.keypressed(key)
 	end
 end
 
+function getDistance(x1, y1, x2, y2)
+	local  a = (x2 - x1) ^ 2 
+	local  b = (y2 - y1) ^ 2
+	local  c = a + b
+
+	return math.sqrt(c)
+end
+
 function love.update(dt)
-	--love.mouse.getPosition returns the x and y position of the cursor.
 	mouse_x, mouse_y = love.mouse.getPosition()
 
 	angle = math.atan2(mouse_y - circle.y, mouse_x - circle.x)
@@ -63,18 +70,23 @@ function love.update(dt)
 	cos = math.cos(angle)
 	sin = math.sin(angle)
 
-	--Make the circle move towards the mouse
-	circle.x = circle.x + circle.speed * cos * dt
-	circle.y = circle.y + circle.speed * sin * dt
+	local distance = getDistance(circle.x, circle.y, mouse_x, mouse_y)
+
+	if distance < 400 then
+			circle.x = circle.x + circle.speed * cos * (distance/100) * dt
+			circle.y = circle.y + circle.speed * sin * (distance/100) * dt
+	end
 end
 
 function love.draw()
+	love.graphics.print("angle: " .. angle, 10, 10)
 	love.graphics.circle("line", circle.x, circle.y, circle.radius)
 
-	love.graphics.print("angle: " .. angle, 10, 10)
-
-	love.graphics.line(circle.x, circle.y, mouse_x, circle.y)
-	love.graphics.line(circle.x, circle.y, circle.x, mouse_y)
 
 	love.graphics.line(circle.x, circle.y, mouse_x, mouse_y)
+	love.graphics.line(mouse_x, mouse_y, mouse_x, circle.y)
+	love.graphics.line(circle.x, circle.y, mouse_x, circle.y)
+
+	local distance = getDistance(circle.x, circle.y, mouse_x, mouse_y)
+	love.graphics.circle("line", circle.x, circle.y, distance)
 end
