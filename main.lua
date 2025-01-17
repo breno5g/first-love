@@ -14,12 +14,35 @@ function love.load()
 			grid[y][x] = false
 		end
 	end
+
+	love.keyboard.setKeyRepeat(true)
 end
 
 function love.keypressed(key)
 	if key == "escape" then
 		love.event.quit()
 	end
+
+	local nextGrid = {}
+
+	for y = 1, gridYCount do
+		nextGrid[y] = {}
+		for x = 1, gridXCount do
+			local neighborCount = 0
+
+			for dy = -1, 1 do
+				for dx = -1, 1 do
+					if not (dy == 0 and dx == 0) and grid[y + dy] and grid[y + dy][x + dx] then
+						neighborCount = neighborCount + 1
+					end
+				end
+			end
+
+			nextGrid[y][x] = neighborCount == 3 or (grid[y][x] and neighborCount == 2)
+		end
+	end
+
+	grid = nextGrid
 end
 
 function love.update()
@@ -28,6 +51,8 @@ function love.update()
 
 	if love.mouse.isDown(1) then
 		grid[selectedY][selectedX] = true
+	elseif love.mouse.isDown(2) then
+		grid[selectedY][selectedX] = false
 	end
 end
 
