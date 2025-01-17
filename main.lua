@@ -1,6 +1,7 @@
 local cellSize = 5
 local selectedX = 0
 local selectedY = 0
+local gridXCount, gridYCount = 500, 500
 
 function love.load()
 	love.window.setMode(500, 500)
@@ -14,8 +15,8 @@ function love.keypressed(key)
 end
 
 function love.update()
-	selectedX = math.floor(love.mouse.getX() / cellSize) + 1
-	selectedY = math.floor(love.mouse.getY() / cellSize) + 1
+	selectedX = math.min(math.floor(love.mouse.getX() / cellSize) + 1, gridXCount)
+	selectedY = math.min(math.floor(love.mouse.getY() / cellSize) + 1, gridYCount)
 end
 
 function love.draw()
@@ -23,7 +24,11 @@ function love.draw()
 		for x = 1, 500 do
 			local cellDrawSize = cellSize - 1
 
-			love.graphics.setColor(0.86, 0.86, 0.86)
+			if x == selectedX and y == selectedY then
+				love.graphics.setColor(0, 1, 1)
+			else
+				love.graphics.setColor(0.86, 0.86, 0.86)
+			end
 			love.graphics.rectangle("fill", (x - 1) * cellSize, (y - 1) * cellSize, cellDrawSize, cellDrawSize)
 		end
 	end
